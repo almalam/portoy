@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cute Shark Portfolio 🦈✨</title>
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* --------------------------------------------------
+       1. VARIABLES & THEME SETUP
+       -------------------------------------------------- */
+    :root {
+      --bg-ocean: #d7f3f0;
+      --card-bg: #ffffff;
+      --primary-teal: #3bbca7;
+      --deep-ocean: #2c5282;
+      --shark-gray: #78909c;
+      --coral-pink: #ff8a80;
+      --bubble-blue: #b3e5fc;
+      --sand-yellow: #fff59d;
+      --text-dark: #2d3748;
+      --radius: 28px;
+      --bounce-transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background-color: var(--bg-ocean);
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1, h2, h3, .logo {
+      font-family: 'Fredoka', cursive;
+    }
+
+    /* --------------------------------------------------
+       2. ANIMATED BUBBLES BACKGROUND & SWIMMING SHARK
+       -------------------------------------------------- */
+    .bubbles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -50px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      border: 2px solid rgba(59, 188, 167, 0.2);
+      animation: rise 10s infinite ease-in;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(0.8); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    }
+
+    .swimming-shark {
+      position: fixed;
+      bottom: 15%;
+      left: -150px;
+      font-size: 3rem;
+      color: var(--shark-gray);
+      z-index: 10;
+      pointer-events: none;
+      animation: swimRight 18s linear infinite;
+    }
+
+    @keyframes swimRight {
+      0% { left: -150px; transform: scaleX(1) translateY(0); }
+      50% { transform: scaleX(1) translateY(-20px); }
+      100% { left: 105vw; transform: scaleX(1) translateY(0); }
+    }
+
+    /* --------------------------------------------------
+       3. NAVIGATION BAR
+       -------------------------------------------------- */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      border-bottom: 4px dashed var(--primary-teal);
+      border-radius: 0 0 20px 20px;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      color: var(--deep-ocean);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-shark {
+      display: inline-block;
+      animation: wiggle 2s infinite ease-in-out;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-12deg); }
+      75% { transform: rotate(12deg); }
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--deep-ocean);
+      font-family: 'Fredoka', cursive;
+      font-size: 1.1rem;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      transition: var(--bounce-transition);
+    }
+
+    .nav-links a:hover {
+      background: var(--coral-pink);
+      color: white;
+      transform: translateY(-3px) rotate(-2deg);
+    }
+
+    .nav-toggle {
+      display: none;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--deep-ocean);
+      cursor: pointer;
+    }
+
+    /* --------------------------------------------------
+       4. HERO SECTION
+       -------------------------------------------------- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8rem 8% 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text {
+      max-width: 550px;
+    }
+
+    .cute-badge {
+      display: inline-block;
+      background: var(--sand-yellow);
+      color: var(--deep-ocean);
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: 2px dashed var(--primary-teal);
+      margin-bottom: 1.2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .hero-text h1 {
+      font-size: 3.2rem;
+      color: var(--deep-ocean);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      color: var(--text-dark);
+      margin-bottom: 2rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      font-family: 'Fredoka', cursive;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: var(--bounce-transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      border: 3px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--coral-pink);
+      color: white;
+      box-shadow: 0 8px 20px rgba(255, 138, 128, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(255, 138, 128, 0.6);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--deep-ocean);
+      border-color: var(--primary-teal);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary-teal);
+      color: white;
+      transform: translateY(-5px) scale(1.05);
+    }
+
+    /* Mascot & Photo Container */
+    .hero-avatar {
+      position: relative;
+    }
+
+    .shark-chibi-card {
+      width: 280px;
+      height: 280px;
+      background: white;
+      border-radius: 50%;
+      border: 8px solid var(--primary-teal);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 15px 35px rgba(59, 188, 167, 0.25);
+      animation: float 4s ease-in-out infinite;
+      position: relative;
+      overflow: hidden;
+      padding: 6px; /* White space around photo */
+    }
+
+    /* Profile Photo Styling */
+    .profile-photo {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      border: 4px solid var(--bg-ocean);
+    }
+
+    .mini-fin {
+      position: absolute;
+      font-size: 2.2rem;
+      color: var(--coral-pink);
+      animation: float 3s ease-in-out infinite alternate;
+      z-index: 2;
+    }
+    .fin-1 { top: -10px; right: 10px; animation-delay: 0.5s; }
+    .fin-2 { bottom: 0px; left: -15px; animation-delay: 1s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-18px) rotate(4deg); }
+    }
+
+    /* --------------------------------------------------
+       5. PROJECTS SECTION & ORNAMENT CARDS
+       -------------------------------------------------- */
+    section {
+      padding: 6rem 8%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--deep-ocean);
+      margin-bottom: 3.5rem;
+      position: relative;
+    }
+
+    .section-title::before {
+      content: '🫧 🦈 🫧';
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 3rem 2rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: var(--bounce-transition);
+      border: 3px solid #e2e8f0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card::before {
+      content: '🦈';
+      position: absolute;
+      top: -28px;
+      right: 25px;
+      font-size: 2.2rem;
+      background: var(--sand-yellow);
+      border: 3px solid var(--primary-teal);
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: var(--bounce-transition);
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--primary-teal);
+      box-shadow: 0 15px 35px rgba(59, 188, 167, 0.2);
+    }
+
+    .project-card:hover::before {
+      transform: rotate(20deg) scale(1.15);
+      background: var(--coral-pink);
+    }
+
+    .project-img {
+      width: 100%;
+      height: 160px;
+      background: var(--bg-ocean);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      color: var(--primary-teal);
+      margin-bottom: 1.2rem;
+      border: 2px dashed rgba(59, 188, 167, 0.5);
+    }
+
+    .project-card h3 {
+      font-size: 1.4rem;
+      color: var(--deep-ocean);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card p {
+      color: var(--text-dark);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .tag-container {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+
+    .tag {
+      background: var(--bg-ocean);
+      color: var(--deep-ocean);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    /* --------------------------------------------------
+       6. SKILLS SECTION
+       -------------------------------------------------- */
+    .skills-container {
+      max-width: 750px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 3rem;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 3px solid var(--bubble-blue);
+    }
+
+    .skill-item {
+      margin-bottom: 1.8rem;
+    }
+
+    .skill-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+      color: var(--deep-ocean);
+      font-size: 1.05rem;
+    }
+
+    .skill-bar-bg {
+      height: 22px;
+      background: var(--bg-ocean);
+      border-radius: 50px;
+      overflow: hidden;
+      padding: 3px;
+      border: 2px solid var(--primary-teal);
+      position: relative;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-teal), var(--coral-pink));
+      border-radius: 50px;
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .skill-bar-fill::after {
+      content: '🐟';
+      position: absolute;
+      right: -8px;
+      top: -6px;
+      font-size: 1rem;
+    }
+
+    /* --------------------------------------------------
+       7. BIODATA & ABOUT SECTION
+       -------------------------------------------------- */
+    .biodata-card {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 3.5rem 3rem;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      border: 3px solid var(--primary-teal);
+      position: relative;
+    }
+
+    .biodata-card::after {
+      content: '🦈';
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      font-size: 3rem;
+      transform: rotate(-15deg);
+    }
+
+    .bio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .bio-item {
+      background: var(--bg-ocean);
+      padding: 1.2rem;
+      border-radius: 20px;
+      border: 2px dashed rgba(59, 188, 167, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .bio-icon {
+      font-size: 1.8rem;
+      color: var(--primary-teal);
+      background: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .bio-details h4 {
+      font-size: 0.85rem;
+      color: var(--shark-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .bio-details p {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--deep-ocean);
+    }
+
+    .social-section {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 2px dashed #e2e8f0;
+    }
+
+    .social-section h3 {
+      font-size: 1.4rem;
+      color: var(--deep-ocean);
+      margin-bottom: 1.2rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--bg-ocean);
+      color: var(--deep-ocean);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      text-decoration: none;
+      transition: var(--bounce-transition);
+      border: 2px solid var(--primary-teal);
+    }
+
+    .social-btn:hover {
+      background: var(--coral-pink);
+      color: white;
+      border-color: var(--coral-pink);
+      transform: translateY(-5px) rotate(8deg);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      color: var(--deep-ocean);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* --------------------------------------------------
+       8. RESPONSIVE DESIGN (MEDIA QUERIES)
+       -------------------------------------------------- */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        background: rgba(255, 255, 255, 0.98);
+        width: 100%;
+        height: calc(100vh - 70px);
+        flex-direction: column;
+        align-items: center;
+        padding-top: 3rem;
+        transition: 0.4s ease;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .hero {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 3rem;
+        padding-top: 7rem;
+      }
+
+      .hero-text h1 {
+        font-size: 2.3rem;
+      }
+
+      .btn-group {
+        justify-content: center;
+      }
+
+      .shark-chibi-card {
+        width: 220px;
+        height: 220px;
+      }
+
+      .skills-container, .biodata-card {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND FLOATING BUBBLES -->
+  <div class="bubbles-container" id="bubblesContainer"></div>
+
+  <!-- SWIMMING MASCOT SHARK -->
+  <div class="swimming-shark">
+    <i class="fa-solid fa-fish-fins"></i>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="#" class="logo">
+      <span class="logo-shark">🦈</span> Cute Bites
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#biodata">Biodata</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="about">
+    <div class="hero-text">
+      <span class="cute-badge">✨ Swimming in Web Dev 🌊</span>
+      <h1>Hi, I'm Rashaqa!</h1>
+      <p>I'm a student of software Engineering at SMK Plus Pelita Nusantara that interested in creating beautiful and functional web experiences, and i love to do design and i also enjoying make posters on canva.</p>
+      <div class="btn-group">
+        <a href="#projects" class="btn btn-primary">View Projects 🦈</a>
+        <a href="#biodata" class="btn btn-secondary">My Biodata 🫧</a>
+      </div>
+    </div>
+    
+    <!-- Hero Photo Avatar -->
+    <div class="hero-avatar">
+      <div class="shark-chibi-card">
+        <!-- CHANGE THE SRC LINK BELOW TO YOUR PHOTO URL OR LOCAL FILE -->
+        <img src= "suluy.jpeg" alt="Profile Photo" class="profile-photo">
+      </div>
+      <i class="fa-solid fa-fish-fins mini-fin fin-1"></i>
+      <i class="fa-solid fa-star mini-fin fin-2"></i>
+    </div>
+  </section>
+
+  <!-- PROJECTS SECTION -->
+  <section id="projects">
+    <h2 class="section-title">Fin-tastic Projects</h2>
+    <div class="projects-grid">
+      
+      <!-- Project Card 1 -->
+      <article class="project-card">
+        <div class="project-img">
+          <i class="fa-solid fa-water"></i>
+        </div>
+        <h3>Banking App</h3>
+        <p>A super cute banking app for managing finances!</p>
+        <div class="tag-container">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">Python</span>
+        </div>
+        <a href="#" class="btn btn-secondary" style="justify-content: center; width: 100%;">View Demo 🌊</a>
+      </article>
+
+      <!-- Project Card 2 -->
+      <article class="project-card">
+        <div class="project-img">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+        <h3>Shark Pet Sanctuary</h3>
+        <p>An interactive virtual pet game where you take care of baby sharks and feed them snacks.</p>
+        <div class="tag-container">
+          <span class="tag">JavaScript</span>
+          <span class="tag">Animations</span>
+        </div>
+        <a href="#" class="btn btn-secondary" style="justify-content: center; width: 100%;">View Demo 🦈</a>
+      </article>
+
+      <!-- Project Card 3 -->
+      <article class="project-card">
+        <div class="project-img">
+          <i class="fa-solid fa-shell"></i>
+        </div>
+        <h3>Coral Reef Explorer</h3>
+        <p>An educational web app fetching data on marine life and reef conservation efforts.</p>
+        <div class="tag-container">
+          <span class="tag">Fetch API</span>
+          <span class="tag">Flexbox</span>
+        </div>
+        <a href="#" class="btn btn-secondary" style="justify-content: center; width: 100%;">View Demo 🐚</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- SKILLS SECTION -->
+  <section id="skills">
+    <h2 class="section-title">Sharky Skills</h2>
+    <div class="skills-container">
+      
+      <div class="skill-item">
+        <div class="skill-info">
+          <span><i class="fa-solid fa-code"></i> HTML & CSS</span>
+          <span>90%</span>
+        </div>
+        <div class="skill-bar-bg">
+          <div class="skill-bar-fill" data-skill="90%"></div>
+        </div>
+      </div>
+
+       <div class="skill-item">
+        <div class="skill-info">
+          <span><i class="fa-solid fa-code"></i> PHP,Python & JavaScript</span>
+          <span>80%</span>
+        </div>
+        <div class="skill-bar-bg">
+          <div class="skill-bar-fill" data-skill="80%"></div>
+        </div>
+      </div>
+
+      <div class="skill-item">
+        <div class="skill-info">
+          <span><i class="fa-solid fa-paint-brush"></i> Design & UI/UX</span>
+          <span>90%</span>
+        </div>
+        <div class="skill-bar-bg">
+          <div class="skill-bar-fill" data-skill="90%"></div>
+        </div>
+      </div>
+
+      <div class="skill-item">
+        <div class="skill-info">
+          <span><i class="fa-solid fa-wand-magic-sparkles"></i> logic</span>
+          <span>85%</span>
+        </div>
+        <div class="skill-bar-bg">
+          <div class="skill-bar-fill" data-skill="85%"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BIODATA & ABOUT SECTION -->
+  <section id="biodata">
+    <h2 class="section-title">All About Me</h2>
+    <div class="biodata-card">
+      
+      <!-- Quick Info Grid -->
+      <div class="bio-grid">
+        
+        <div class="bio-item">
+          <div class="bio-icon"><i class="fa-solid fa-user"></i></div>
+          <div class="bio-details">
+            <h4>Full Name</h4>
+            <p>Rashaqa Almaira Putri</p>
+          </div>
+        </div>
+
+        <div class="bio-item">
+          <div class="bio-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div class="bio-details">
+            <h4>Location</h4>
+            <p>Depok, Indonesia 🇮🇩</p>
+          </div>
+        </div>
+
+        <div class="bio-item">
+          <div class="bio-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div class="bio-details">
+            <h4>Role / Focus</h4>
+            <p>UI Designer & Developer</p>
+          </div>
+        </div>
+
+        <div class="bio-item">
+          <div class="bio-icon"><i class="fa-solid fa-heart"></i></div>
+          <div class="bio-details">
+            <h4>Hobbies</h4>
+            <p>Art & Design</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Social Media & Contact Links -->
+      <div class="social-section">
+        <h3>Catch Me Around The Web 🌊</h3>
+        <div class="social-links">
+          <a href="https://github.com/almalam" class="social-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/rashaqa-almaira-putri-921653405/" class="social-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://x.com/aymayamp" class="social-btn" title="Twitter/X"><i class="fa-brands fa-x"></i></a>
+          <a href="https://www.instagram.com/rshqama.ii/" class="social-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="mailto:cingciripitasoy00@gmail.com" class="social-btn" title="Email Me"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Handcrafted with 💖 & shark vibes • 2026</p>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // 1. Generate Floating Background Bubbles Dynamic FX
+    const container = document.getElementById('bubblesContainer');
+    for (let i = 0; i < 20; i++) {
+      const bubble = document.createElement('div');
+      bubble.classList.add('bubble');
+      const size = Math.random() * 30 + 10;
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+      bubble.style.left = `${Math.random() * 100}%`;
+      bubble.style.animationDuration = `${Math.random() * 6 + 6}s`;
+      bubble.style.animationDelay = `${Math.random() * 5}s`;
+      container.appendChild(bubble);
+    }
+
+    // 2. Responsive Mobile Menu Toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      const icon = navToggle.querySelector('i');
+      icon.classList.toggle('fa-bars');
+      icon.classList.toggle('fa-xmark');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        const icon = navToggle.querySelector('i');
+        icon.classList.add('fa-bars');
+        icon.classList.remove('fa-xmark');
+      });
+    });
+
+    // 3. Animated Skill Bars on Scroll
+    const skillBars = document.querySelectorAll('.skill-bar-fill');
+    const animateSkills = () => {
+      skillBars.forEach(bar => {
+        const rect = bar.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom >= 0) {
+          bar.style.width = bar.getAttribute('data-skill');
+        }
+      });
+    };
+
+    window.addEventListener('scroll', animateSkills);
+    animateSkills();
+  </script>
+</body>
+</html>
